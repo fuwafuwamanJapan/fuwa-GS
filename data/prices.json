@@ -1,0 +1,40 @@
+{
+  "updated_at": "2026-11-08T03:11:19.523Z",
+  "last_attempt": {
+    "at": "2026-11-08T03:11:19.523Z",
+    "ok": [
+      "ハイオク平均",
+      "灯油平均",
+      "店舗ページ"
+    ],
+    "notes": []
+  },
+  "history": [
+    {
+      "date": "2026-11-05",
+      "uniHighOctane": 164,
+      "uniRegular": 153,
+      "uniDiesel": 144,
+      "uniKerosene18l": 2340,
+      "nationalHighOctane": null,
+      "aichiHighOctane": null,
+      "nationalKerosene18l": null,
+      "aichiKerosene18l": null,
+      "confirmedLabel": null,
+      "fetchedAt": "2026-11-08T03:11:19.523Z"
+    },
+    {
+      "date": "2026-11-07",
+      "uniHighOctane": 164,
+      "uniRegular": 153,
+      "uniDiesel": 144,
+      "uniKerosene18l": 2340,
+      "nationalHighOctane": 177.9,
+      "aichiHighOctane": 172.9,
+      "nationalKerosene18l": 2525.9,
+      "aichiKerosene18l": 2522.9,
+      "confirmedLabel": "1日前 確認",
+      "fetchedAt": "2026-11-08T03:11:19.523Z"
+    }
+  ]
+}
