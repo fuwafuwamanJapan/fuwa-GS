@@ -1,0 +1,49 @@
+# ============================================================
+# 価格の自動更新（fuwa-gs ver 2.0.0）
+# 保存先: .github/workflows/update-prices.yml
+#
+# 毎朝 日本時間6時半ごろ（= UTCの前日21時半）に実行。
+# GitHubの予約実行のため、数分〜数十分ずれることがあります。
+# 「Actions」タブの「Run workflow」からいつでも手動で実行できます。
+# ============================================================
+
+name: 価格を自動更新
+
+on:
+  schedule:
+    - cron: '30 21 * * *'   # 日本時間 6:30ごろ
+  workflow_dispatch:         # 手動実行
+
+permissions:
+  contents: write            # data/prices.json を保存（コミット）するため
+
+concurrency:
+  group: update-prices
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリを取得
+        uses: actions/checkout@v4
+
+      - name: Node.js を準備
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 価格を取得して data/prices.json を更新
+        run: node fetch-prices.js
+
+      - name: 変更があれば保存
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/prices.json
+          if git diff --cached --quiet; then
+            echo "変更なし"
+          else
+            git commit -m "価格を更新 $(date -u +%Y-%m-%d)"
+            git push
+          fi
