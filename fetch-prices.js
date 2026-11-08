@@ -1,15 +1,25 @@
 // ============================================================
 // ユニーオイル日進五色園SS ハイオク・灯油価格 取得スクリプト
-// fuwa-gs ver 2.0.0
+// fuwa-gs ver 2.0.1
 //
 // 役割: gogo.gs から価格を取り、data/prices.json を更新する（60日分）
 // 実行: GitHub Actions（update-prices.yml）が毎朝実行する
 //       手元で試す場合: node fetch-prices.js
 // 動作: Node.js 20 以上。外部ライブラリは使わない
+//
+// ver 2.0.1 の変更点（GitHub Actions で HTTP 403 になる対策）:
+//   ・取得を curl 優先に変更（ブラウザ風UA・ヘッダ付き）。Node標準の
+//     fetch は通信の特徴でbot判定されやすいため、失敗時の予備にした
+//   ・失敗したら間を空けて再試行する（curl → fetch → curl）
+//   ・HTTPエラー時に、応答本文の冒頭をエラー文へ含める（原因切り分け用）
 // ============================================================
 
 const fs = require('fs');
 const path = require('path');
+const { execFile } = require('child_process');
+const { promisify } = require('util');
+
+const execFileAsync = promisify(execFile);
 
 const SHOP_URL = 'https://gogo.gs/shop/2313000034';                  // ユニーオイル日進五色園SS
 const AVERAGE_HIGH_OCTANE_URL = 'https://gogo.gs/ranking/average/1'; // ハイオク 平均
@@ -37,13 +47,60 @@ function ymd(y, m, d) {
   return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
 }
 
+// ---------- 取得 ----------
+
+// ブラウザに寄せたリクエスト情報（bot判定を避けるため）
+const BROWSER_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+const BROWSER_HEADERS = [
+  ['Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'],
+  ['Accept-Language', 'ja,en;q=0.9'],
+  ['Referer', 'https://gogo.gs/'],
+];
+
+// エラー文に付ける応答本文の冒頭（空白を詰めて短くする）
+function snippet(text) {
+  return String(text).replace(/\s+/g, ' ').trim().slice(0, 160);
+}
+
+// curl で取得する（GitHub Actions の ubuntu には標準で入っている）
+async function fetchViaCurl(url) {
+  const args = ['-sS', '-L', '--compressed', '--max-time', '25', '-A', BROWSER_UA];
+  for (const [k, v] of BROWSER_HEADERS) args.push('-H', `${k}: ${v}`);
+  args.push('-w', '\n__STATUS__%{http_code}', url);
+  const { stdout } = await execFileAsync('curl', args, { maxBuffer: 8 * 1024 * 1024 });
+  const marker = '\n__STATUS__';
+  const idx = stdout.lastIndexOf(marker);
+  const body = idx >= 0 ? stdout.slice(0, idx) : stdout;
+  const status = idx >= 0 ? Number(stdout.slice(idx + marker.length)) : 0;
+  if (status !== 200) throw new Error(`HTTP ${status}（curl）: ${snippet(body)}`);
+  return body;
+}
+
+// Node標準の fetch で取得する（curl が無い環境向けの予備）
+async function fetchViaFetch(url) {
+  const headers = { 'User-Agent': BROWSER_UA };
+  for (const [k, v] of BROWSER_HEADERS) headers[k] = v;
+  const res = await fetch(url, { headers, signal: AbortSignal.timeout(TIMEOUT_MS) });
+  const body = await res.text();
+  if (!res.ok) throw new Error(`HTTP ${res.status}（fetch）: ${snippet(body)}`);
+  return body;
+}
+
+// curl → fetch → curl の順に、間を空けて試す
 async function fetchHtml(url) {
-  const res = await fetch(url, {
-    headers: { 'User-Agent': 'Mozilla/5.0 (fuwa-gs price checker)' },
-    signal: AbortSignal.timeout(TIMEOUT_MS),
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.text();
+  const attempts = [fetchViaCurl, fetchViaFetch, fetchViaCurl];
+  let lastErr = null;
+  for (let i = 0; i < attempts.length; i++) {
+    try {
+      return await attempts[i](url);
+    } catch (e) {
+      lastErr = e;
+      if (i < attempts.length - 1) {
+        await new Promise((r) => setTimeout(r, 3000));
+      }
+    }
+  }
+  throw lastErr;
 }
 
 // ---------- 解析 ----------
