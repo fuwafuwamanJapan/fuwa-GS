@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ユニーオイル 日進五色園SS 価格</title>
-<!-- fuwa-gs ver 2.0.0 : 保存場所 リポジトリ直下 index.html -->
+<!-- fuwa-gs ver 2.1.0 : 保存場所 リポジトリ直下 index.html ／ アプリ内更新ボタン（Apps Script受け口＋Muse側チェック）を追加 -->
 <style>
   :root { --bg:#e9e6dd; --paper:#f7f4ec; --ink:#1d2126; --muted:#5d6470; --line:#d5d0c2; --board:#171b21; --accent:#ffd23f; --on-accent:#171b21; }
   body[data-theme="ke"] { --accent:#4da3ff; --on-accent:#ffffff; }
@@ -68,7 +68,9 @@
 
   <div class="actions">
     <button type="button" id="reload">最新の表示に更新</button>
+    <button type="button" id="req-update">最新価格を取りに行く</button>
     <span class="stamp" id="stamp"></span>
+    <span class="stamp" id="req-msg"></span>
   </div>
 
   <h2>価格の推移</h2>
@@ -244,6 +246,23 @@
     b.addEventListener('click', () => { fuel = b.dataset.fuel; render(); });
   });
   document.getElementById('reload').addEventListener('click', load);
+
+  // アプリ内更新リクエスト（受け口はApps Script。実際の取得はMuse側が数分以内に行う）
+  const UPDATE_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxm4prjYFarid4tayehvkI6jYLjI6P_V1ZiCus8ufwtuucfQxT1FPzyEjPo6FKwR04pxw/exec';
+  const UPDATE_KEY = '55';
+  const reqBtn = document.getElementById('req-update');
+  const reqMsg = document.getElementById('req-msg');
+  reqBtn.addEventListener('click', async () => {
+    reqBtn.disabled = true;
+    reqMsg.textContent = 'リクエスト中…';
+    try {
+      await fetch(UPDATE_ENDPOINT + '?k=' + UPDATE_KEY + '&req=1', { mode: 'no-cors' });
+      reqMsg.textContent = '受け付けました。2〜3分後に「最新の表示に更新」を押してください。';
+    } catch (e) {
+      reqMsg.textContent = '送信できませんでした。通信状態を確認して、もう一度押してください。';
+      reqBtn.disabled = false;
+    }
+  });
 
   let resizeTimer;
   window.addEventListener('resize', () => {
