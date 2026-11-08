@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ユニーオイル 日進五色園SS 価格</title>
+<!-- fuwa-gs ver 2.0.0 : 保存場所 リポジトリ直下 index.html -->
+<style>
+  :root { --bg:#e9e6dd; --paper:#f7f4ec; --ink:#1d2126; --muted:#5d6470; --line:#d5d0c2; --board:#171b21; --accent:#ffd23f; --on-accent:#171b21; }
+  body[data-theme="ke"] { --accent:#4da3ff; --on-accent:#ffffff; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif; }
+  main { max-width:640px; margin:0 auto; padding:16px; }
+  .tabs { display:flex; gap:4px; background:var(--paper); border:1px solid var(--line); border-radius:999px; padding:4px; }
+  .tabs button { flex:1; border:0; background:transparent; padding:10px; font-size:16px; font-weight:bold; border-radius:999px; color:var(--muted); cursor:pointer; }
+  .tabs button[aria-selected="true"] { background:var(--accent); color:var(--on-accent); }
+  .board { margin-top:12px; background:var(--board); color:#f5f2ec; border-radius:12px; overflow:hidden; }
+  .board .head { background:#000; color:#fff; padding:10px 16px; font-size:14px; font-weight:bold; letter-spacing:.05em; }
+  .board .body { padding:16px 16px 18px; }
+  .fuel { color:var(--accent); font-weight:bold; font-size:14px; }
+  .price-row { display:flex; align-items:baseline; gap:6px; margin-top:4px; }
+  .price { font-size:68px; font-weight:900; line-height:1; color:var(--accent); font-variant-numeric:tabular-nums; }
+  .unit { font-size:20px; font-weight:bold; color:var(--accent); }
+  .meta { color:#c9cdd3; font-size:13px; margin:8px 0 0; }
+  .avgs { display:flex; gap:8px; margin-top:16px; }
+  .avg { flex:1; background:rgba(255,255,255,.08); border-radius:8px; padding:10px 12px; }
+  .avg .name { font-size:12px; color:#c9cdd3; }
+  .avg .v { font-size:24px; font-weight:bold; margin-top:2px; }
+  .avg .d { font-size:12px; color:#7be495; font-weight:bold; margin-top:2px; min-height:1em; }
+  .notice { display:none; margin-top:12px; padding:10px 12px; border-radius:8px; background:#fff4c2; color:#5a4500; font-size:13px; line-height:1.6; }
+  .notice.show { display:block; }
+  .notice.err { background:#ffe0dc; color:#7a1d14; }
+  .actions { display:flex; align-items:center; gap:12px; margin-top:14px; flex-wrap:wrap; }
+  .actions button { background:var(--accent); color:var(--on-accent); border:0; border-radius:10px; padding:10px 18px; font-size:15px; font-weight:bold; cursor:pointer; }
+  .stamp { color:var(--muted); font-size:12px; }
+  h2 { font-size:18px; margin:28px 0 8px; }
+  #chart { width:100%; height:260px; background:var(--paper); border:1px solid var(--line); border-radius:10px; }
+  .chart-msg { color:var(--muted); font-size:13px; min-height:1em; margin-top:6px; }
+  table { width:100%; border-collapse:collapse; background:var(--paper); font-size:13px; }
+  th, td { padding:7px 8px; border-bottom:1px solid var(--line); text-align:right; }
+  th:first-child, td:first-child { text-align:left; }
+  .foot { color:var(--muted); font-size:12px; line-height:1.7; margin-top:24px; }
+</style>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body data-theme="ho">
+<main>
+  <div class="tabs" role="tablist">
+    <button type="button" data-fuel="ho" role="tab" aria-selected="true">ハイオク</button>
+    <button type="button" data-fuel="ke" role="tab" aria-selected="false">灯油</button>
+  </div>
+  <p class="meta" id="ke-note" hidden>灯油は18L（ポリタンク1缶）あたりの価格です。</p>
+
+  <section class="board">
+    <div class="head">ユニーオイル 日進五色園SS（日進市）</div>
+    <div class="body">
+      <div class="fuel" id="fuel-label"></div>
+      <div class="price-row"><span class="price" id="price">—</span><span class="unit" id="unit"></span></div>
+      <div class="meta" id="meta">読み込み中…</div>
+      <div class="avgs">
+        <div class="avg"><div class="name">全国平均</div><div class="v" id="nat">—</div><div class="d" id="nat-diff"></div></div>
+        <div class="avg"><div class="name">愛知平均</div><div class="v" id="aichi">—</div><div class="d" id="aichi-diff"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="notice" id="notice"></div>
+
+  <div class="actions">
+    <button type="button" id="reload">最新の表示に更新</button>
+    <span class="stamp" id="stamp"></span>
+  </div>
+
+  <h2>価格の推移</h2>
+  <div id="chart"></div>
+  <div class="chart-msg" id="chart-msg"></div>
+
+  <h2>履歴（新しい順）</h2>
+  <table>
+    <thead><tr><th>日付</th><th>ユニー</th><th>全国</th><th>愛知</th></tr></thead>
+    <tbody id="history"></tbody>
+  </table>
+
+  <p class="foot">
+    ユニーオイル日進五色園SS ／ バロン・パーク(株) 愛知県日進市北新町殿ケ池中707-1 ／ セルフ ／ 24時間営業 ／ 電話 0561-75-6525<br>
+    価格出典: gogo.gs 店舗ページ・都道府県平均価格。価格はユーザー投稿をもとにしているため、給油前に店頭価格をご確認ください。
+  </p>
+</main>
+
+<script>
+  const FUELS = {
+    ho: { label: 'ハイオク 現金価格', unit: '円/L', theme: 'ho', uni: 'uniHighOctane', nat: 'nationalHighOctane', ai: 'aichiHighOctane', color: '#d92b1f' },
+    ke: { label: '灯油 現金価格（18L）', unit: '円/18L', theme: 'ke', uni: 'uniKerosene18l', nat: 'nationalKerosene18l', ai: 'aichiKerosene18l', color: '#1d6fd8' }
+  };
+
+  let fuel = 'ho';
+  let rows = [];          // 履歴（古い順）
+  let dataInfo = null;    // 保存データ全体（更新時刻・取得状況）
+  let loadError = null;   // 読み込みの失敗理由
+  let chartReady = false;
+  let chartFailed = false;
+
+  // Googleのグラフ部品を読み込む（失敗しても価格の表示は続く）
+  if (typeof google !== 'undefined' && google.charts) {
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(() => { chartReady = true; render(); });
+  } else {
+    chartFailed = true;
+  }
+
+  const JP = (n, digits) => n.toLocaleString('ja-JP', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+  const todayJst = () => new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
+  const latest = (key) => {
+    for (let i = rows.length - 1; i >= 0; i--) if (rows[i][key] != null) return rows[i];
+    return null;
+  };
+  const diffText = (uni, avg) => {
+    if (uni == null || avg == null) return '';
+    const d = uni - avg;
+    if (Math.abs(d) < 0.05) return '平均と同じ';
+    return d < 0 ? `平均より ${Math.abs(d).toFixed(1)}円安い` : `平均より ${d.toFixed(1)}円高い`;
+  };
+  const metaText = (row) => {
+    if (!row) return '価格はまだ取得できていません';
+    const parts = [`${row.date} 時点`];
+    if (row.confirmedLabel) parts.push(`gogo.gs: ${row.confirmedLabel}`);
+    return parts.join('　');
+  };
+
+  function render() {
+    const f = FUELS[fuel];
+    document.body.dataset.theme = f.theme;
+    document.querySelectorAll('[data-fuel]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.fuel === fuel)));
+    document.getElementById('ke-note').hidden = fuel !== 'ke';
+    document.getElementById('fuel-label').textContent = f.label;
+    document.getElementById('unit').textContent = f.unit;
+
+    const uniRow = latest(f.uni);
+    const natRow = latest(f.nat);
+    const aiRow = latest(f.ai);
+    const uni = uniRow ? uniRow[f.uni] : null;
+    const nat = natRow ? natRow[f.nat] : null;
+    const ai = aiRow ? aiRow[f.ai] : null;
+
+    document.getElementById('price').textContent = uni != null ? JP(uni, 0) : '—';
+    document.getElementById('meta').textContent = loadError ? '価格を読み込めませんでした' : metaText(uniRow);
+    document.getElementById('nat').textContent = nat != null ? JP(nat, 1) + '円' : '—';
+    document.getElementById('aichi').textContent = ai != null ? JP(ai, 1) + '円' : '—';
+    document.getElementById('nat-diff').textContent = diffText(uni, nat);
+    document.getElementById('aichi-diff').textContent = diffText(uni, ai);
+
+    // 注意メッセージ（読み込み失敗・最新でない・今日の取得で取れなかった項目）
+    const messages = [];
+    let isError = false;
+    if (loadError) {
+      messages.push('価格データを読み込めませんでした。少し時間をおいて「最新の表示に更新」を押してください。');
+      isError = true;
+    } else {
+      if (uniRow && uniRow.date !== todayJst()) {
+        messages.push(`本日分の投稿はまだないため、最新の投稿日（${uniRow.date}）の価格を表示しています。`);
+      }
+      const failed = dataInfo && dataInfo.last_attempt && dataInfo.last_attempt.notes;
+      if (failed && failed.length > 0) {
+        messages.push(`今日の取得で取れなかった項目があります（前回の値を表示）: ${failed.join('、')}`);
+      }
+    }
+    const notice = document.getElementById('notice');
+    notice.textContent = messages.join('\n');
+    notice.className = 'notice' + (messages.length ? ' show' : '') + (isError ? ' err' : '');
+
+    document.getElementById('stamp').textContent = dataInfo && dataInfo.updated_at
+      ? '最終更新 ' + new Date(dataInfo.updated_at).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+      : '';
+
+    renderTable(f);
+    drawChart(f);
+  }
+
+  function renderTable(f) {
+    const tbody = document.getElementById('history');
+    tbody.replaceChildren();
+    for (let i = rows.length - 1; i >= 0; i--) {
+      const r = rows[i];
+      const cells = [
+        r.date,
+        r[f.uni] != null ? JP(r[f.uni], 0) : '—',
+        r[f.nat] != null ? JP(r[f.nat], 1) : '—',
+        r[f.ai] != null ? JP(r[f.ai], 1) : '—'
+      ];
+      const tr = document.createElement('tr');
+      for (const text of cells) {
+        const td = document.createElement('td');
+        td.textContent = text;
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+    }
+  }
+
+  function drawChart(f) {
+    const box = document.getElementById('chart');
+    const msg = document.getElementById('chart-msg');
+    if (chartFailed) { msg.textContent = 'グラフを表示できませんでした（ネット接続を確認してください）。'; return; }
+    if (!chartReady) { msg.textContent = 'グラフを準備中です…'; return; }
+    if (rows.length === 0) { msg.textContent = '履歴がまだありません。'; return; }
+    msg.textContent = '';
+
+    const table = new google.visualization.DataTable();
+    table.addColumn('string', '日付');
+    table.addColumn('number', 'ユニーオイル');
+    table.addColumn('number', '全国平均');
+    table.addColumn('number', '愛知平均');
+    table.addRows(rows.map((r) => [
+      r.date.slice(5).replace('-', '/'),
+      r[f.uni] ?? null,
+      r[f.nat] ?? null,
+      r[f.ai] ?? null
+    ]));
+    new google.visualization.LineChart(box).draw(table, {
+      legend: { position: 'bottom' },
+      colors: [f.color, '#8a8f98', '#0e9f6e'],
+      series: { 1: { lineDashStyle: [4, 4] } },
+      pointSize: 4,
+      backgroundColor: 'transparent',
+      chartArea: { left: 56, right: 16, top: 16, bottom: 56 }
+    });
+  }
+
+  async function load() {
+    loadError = null;
+    try {
+      const res = await fetch(`data/prices.json?t=${Date.now()}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      dataInfo = json;
+      rows = (json.history || []).slice().sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+    } catch (e) {
+      loadError = e.message;
+    }
+    render();
+  }
+
+  document.querySelectorAll('[data-fuel]').forEach((b) => {
+    b.addEventListener('click', () => { fuel = b.dataset.fuel; render(); });
+  });
+  document.getElementById('reload').addEventListener('click', load);
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => drawChart(FUELS[fuel]), 200);
+  });
+
+  load();
+</script>
+</body>
+</html>
