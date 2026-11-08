@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-11-08T03:58:51.706Z",
+  "updated_at": "2026-11-08T04:05:24.495Z",
   "last_attempt": {
-    "at": "2026-11-08T03:58:51.706Z",
+    "at": "2026-11-08T04:05:24.495Z",
     "ok": [
       "ハイオク平均",
       "灯油平均",
@@ -22,7 +22,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-08T03:58:51.706Z"
+      "fetchedAt": "2026-11-08T04:05:24.495Z"
     },
     {
       "date": "2026-10-24",
@@ -35,7 +35,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-08T03:58:51.706Z"
+      "fetchedAt": "2026-11-08T04:05:24.495Z"
     },
     {
       "date": "2026-10-26",
@@ -48,7 +48,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-08T03:58:51.706Z"
+      "fetchedAt": "2026-11-08T04:05:24.495Z"
     },
     {
       "date": "2026-10-28",
@@ -61,7 +61,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-08T03:58:51.706Z"
+      "fetchedAt": "2026-11-08T04:05:24.495Z"
     },
     {
       "date": "2026-10-30",
@@ -74,7 +74,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-08T03:58:51.706Z"
+      "fetchedAt": "2026-11-08T04:05:24.495Z"
     },
     {
       "date": "2026-11-01",
@@ -87,7 +87,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-08T03:58:51.706Z"
+      "fetchedAt": "2026-11-08T04:05:24.495Z"
     },
     {
       "date": "2026-11-03",
@@ -100,7 +100,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-08T03:58:51.706Z"
+      "fetchedAt": "2026-11-08T04:05:24.495Z"
     },
     {
       "date": "2026-11-05",
@@ -113,7 +113,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-08T03:58:51.706Z"
+      "fetchedAt": "2026-11-08T04:05:24.495Z"
     },
     {
       "date": "2026-11-07",
@@ -126,7 +126,7 @@
       "nationalKerosene18l": 2525.9,
       "aichiKerosene18l": 2522.9,
       "confirmedLabel": "1日前 確認",
-      "fetchedAt": "2026-11-08T03:58:51.706Z"
+      "fetchedAt": "2026-11-08T04:05:24.495Z"
     }
   ]
 }
