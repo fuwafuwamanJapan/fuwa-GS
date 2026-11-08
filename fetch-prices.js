@@ -1,11 +1,15 @@
 // ============================================================
 // ユニーオイル日進五色園SS ハイオク・灯油価格 取得スクリプト
-// fuwa-gs ver 2.0.1
+// fuwa-gs ver 2.1.0
 //
-// 役割: gogo.gs から価格を取り、data/prices.json を更新する（60日分）
+// 役割: gogo.gs から価格を取り、data/prices.json を更新する（約200日分）
 // 実行: GitHub Actions（update-prices.yml）が毎朝実行する
 //       手元で試す場合: node fetch-prices.js
 // 動作: Node.js 20 以上。外部ライブラリは使わない
+//
+// ver 2.1.0 の変更点:
+//   ・価格履歴ページの投稿も取り込む（店舗トップより古い投稿があるため）
+//   ・保持期間を60日から約200日に延長（半年分の推移を保つため）
 //
 // ver 2.0.1 の変更点（GitHub Actions で HTTP 403 になる対策）:
 //   ・取得を curl 優先に変更（ブラウザ風UA・ヘッダ付き）。Node標準の
@@ -22,10 +26,11 @@ const { promisify } = require('util');
 const execFileAsync = promisify(execFile);
 
 const SHOP_URL = 'https://gogo.gs/shop/2313000034';                  // ユニーオイル日進五色園SS
+const PRICE_URL = 'https://gogo.gs/shop/price/2313000034';           // 同 価格履歴ページ（古い投稿）
 const AVERAGE_HIGH_OCTANE_URL = 'https://gogo.gs/ranking/average/1'; // ハイオク 平均
 const AVERAGE_KEROSENE_URL = 'https://gogo.gs/ranking/average/3';    // 灯油 平均
 const OUT_FILE = path.join(__dirname, 'data', 'prices.json');
-const KEEP_DAYS = 60;
+const KEEP_DAYS = 200;
 const TIMEOUT_MS = 20000;
 
 // ---------- 共通 ----------
@@ -220,9 +225,10 @@ async function main() {
     else notes.push(`${name}: 解析できず`);
   };
 
-  // 3つのページを同時に取りに行く
-  const [shopRes, hoRes, keRes] = await Promise.allSettled([
+  // 4つのページを同時に取りに行く
+  const [shopRes, priceRes, hoRes, keRes] = await Promise.allSettled([
     fetchHtml(SHOP_URL),
+    fetchHtml(PRICE_URL),
     fetchHtml(AVERAGE_HIGH_OCTANE_URL),
     fetchHtml(AVERAGE_KEROSENE_URL),
   ]);
@@ -239,6 +245,22 @@ async function main() {
     if (!avg) return false;
     setDay(avg.date, { nationalKerosene18l: avg.national, aichiKerosene18l: avg.aichi });
     return true;
+  });
+
+  // 価格履歴ページの投稿（店舗トップより古い分。店舗ページ側の値で後から上書きされる）
+  report('価格履歴ページ', priceRes, (html) => {
+    const history = parseShopHistory(html);
+    const firstByDate = new Map();
+    for (const h of history) {
+      if (!firstByDate.has(h.date)) firstByDate.set(h.date, h);
+    }
+    for (const h of firstByDate.values()) {
+      setDay(h.date, {
+        uniHighOctane: h.highOctane, uniRegular: h.regular,
+        uniDiesel: h.diesel, uniKerosene18l: h.kerosene18l,
+      });
+    }
+    return firstByDate.size > 0;
   });
 
   report('店舗ページ', shopRes, (html) => {
@@ -274,7 +296,7 @@ async function main() {
     return;
   }
 
-  // 日付順に並べて、直近60日分だけ残す
+  // 日付順に並べて、直近200日分だけ残す
   const history = [...byDate.values()]
     .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0))
     .slice(-KEEP_DAYS);
