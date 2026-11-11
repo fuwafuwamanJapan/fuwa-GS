@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-11-10T01:27:00.528Z",
+  "updated_at": "2026-11-11T05:21:57.016Z",
   "last_attempt": {
-    "at": "2026-11-10T01:27:00.528Z",
+    "at": "2026-11-11T05:21:57.016Z",
     "ok": [
       "ハイオク平均",
       "灯油平均",
@@ -48,7 +48,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-10T01:27:00.528Z"
+      "fetchedAt": "2026-11-11T05:21:57.016Z"
     },
     {
       "date": "2026-10-28",
@@ -61,7 +61,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-10T01:27:00.528Z"
+      "fetchedAt": "2026-11-11T05:21:57.016Z"
     },
     {
       "date": "2026-10-30",
@@ -74,7 +74,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-10T01:27:00.528Z"
+      "fetchedAt": "2026-11-11T05:21:57.016Z"
     },
     {
       "date": "2026-11-01",
@@ -87,7 +87,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-10T01:27:00.528Z"
+      "fetchedAt": "2026-11-11T05:21:57.016Z"
     },
     {
       "date": "2026-11-03",
@@ -100,7 +100,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-10T01:27:00.528Z"
+      "fetchedAt": "2026-11-11T05:21:57.016Z"
     },
     {
       "date": "2026-11-05",
@@ -113,7 +113,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-10T01:27:00.528Z"
+      "fetchedAt": "2026-11-11T05:21:57.016Z"
     },
     {
       "date": "2026-11-07",
@@ -126,7 +126,7 @@
       "nationalKerosene18l": 2525.9,
       "aichiKerosene18l": 2522.9,
       "confirmedLabel": "1日前 確認",
-      "fetchedAt": "2026-11-10T01:27:00.528Z"
+      "fetchedAt": "2026-11-11T05:21:57.016Z"
     },
     {
       "date": "2026-11-08",
@@ -152,7 +152,33 @@
       "nationalKerosene18l": 2524.2,
       "aichiKerosene18l": 2522.8,
       "confirmedLabel": "1日前 確認",
-      "fetchedAt": "2026-11-10T01:27:00.528Z"
+      "fetchedAt": "2026-11-11T05:21:57.016Z"
+    },
+    {
+      "date": "2026-11-10",
+      "uniHighOctane": null,
+      "uniRegular": null,
+      "uniDiesel": null,
+      "uniKerosene18l": null,
+      "nationalHighOctane": 178.1,
+      "aichiHighOctane": 172.8,
+      "nationalKerosene18l": 2524,
+      "aichiKerosene18l": 2522.1,
+      "confirmedLabel": null,
+      "fetchedAt": "2026-11-11T05:21:57.016Z"
+    },
+    {
+      "date": "2026-11-11",
+      "uniHighOctane": 164,
+      "uniRegular": 153,
+      "uniDiesel": 144,
+      "uniKerosene18l": 2340,
+      "nationalHighOctane": null,
+      "aichiHighOctane": null,
+      "nationalKerosene18l": null,
+      "aichiKerosene18l": null,
+      "confirmedLabel": "6時間前 確認",
+      "fetchedAt": "2026-11-11T05:21:57.016Z"
     }
   ]
 }
