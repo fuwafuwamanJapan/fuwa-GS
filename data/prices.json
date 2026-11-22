@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-11-15T21:14:53.925Z",
+  "updated_at": "2026-11-22T21:14:51.507Z",
   "last_attempt": {
-    "at": "2026-11-15T21:14:53.925Z",
+    "at": "2026-11-22T21:14:51.507Z",
     "ok": [
       "ハイオク平均",
       "灯油平均",
@@ -152,7 +152,7 @@
       "nationalKerosene18l": 2524.2,
       "aichiKerosene18l": 2522.8,
       "confirmedLabel": "1日前 確認",
-      "fetchedAt": "2026-11-15T21:14:53.925Z"
+      "fetchedAt": "2026-11-22T21:14:51.507Z"
     },
     {
       "date": "2026-11-10",
@@ -178,7 +178,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": "6時間前 確認",
-      "fetchedAt": "2026-11-15T21:14:53.925Z"
+      "fetchedAt": "2026-11-22T21:14:51.507Z"
     },
     {
       "date": "2026-11-13",
@@ -191,7 +191,7 @@
       "nationalKerosene18l": null,
       "aichiKerosene18l": null,
       "confirmedLabel": null,
-      "fetchedAt": "2026-11-15T21:14:53.925Z"
+      "fetchedAt": "2026-11-22T21:14:51.507Z"
     },
     {
       "date": "2026-11-15",
@@ -204,7 +204,72 @@
       "nationalKerosene18l": 2518.2,
       "aichiKerosene18l": 2525.2,
       "confirmedLabel": "21時間前 確認",
-      "fetchedAt": "2026-11-15T21:14:53.925Z"
+      "fetchedAt": "2026-11-22T21:14:51.507Z"
+    },
+    {
+      "date": "2026-11-16",
+      "uniHighOctane": null,
+      "uniRegular": null,
+      "uniDiesel": 2340,
+      "uniKerosene18l": 2340,
+      "nationalHighOctane": null,
+      "aichiHighOctane": null,
+      "nationalKerosene18l": null,
+      "aichiKerosene18l": null,
+      "confirmedLabel": null,
+      "fetchedAt": "2026-11-22T21:14:51.507Z"
+    },
+    {
+      "date": "2026-11-17",
+      "uniHighOctane": 164,
+      "uniRegular": 153,
+      "uniDiesel": 144,
+      "uniKerosene18l": 2340,
+      "nationalHighOctane": null,
+      "aichiHighOctane": null,
+      "nationalKerosene18l": null,
+      "aichiKerosene18l": null,
+      "confirmedLabel": null,
+      "fetchedAt": "2026-11-22T21:14:51.507Z"
+    },
+    {
+      "date": "2026-11-19",
+      "uniHighOctane": 164,
+      "uniRegular": 153,
+      "uniDiesel": 144,
+      "uniKerosene18l": 2340,
+      "nationalHighOctane": null,
+      "aichiHighOctane": null,
+      "nationalKerosene18l": null,
+      "aichiKerosene18l": null,
+      "confirmedLabel": null,
+      "fetchedAt": "2026-11-22T21:14:51.507Z"
+    },
+    {
+      "date": "2026-11-21",
+      "uniHighOctane": 164,
+      "uniRegular": 153,
+      "uniDiesel": 144,
+      "uniKerosene18l": 2340,
+      "nationalHighOctane": null,
+      "aichiHighOctane": null,
+      "nationalKerosene18l": null,
+      "aichiKerosene18l": null,
+      "confirmedLabel": "1日前 確認",
+      "fetchedAt": "2026-11-22T21:14:51.507Z"
+    },
+    {
+      "date": "2026-11-22",
+      "uniHighOctane": null,
+      "uniRegular": null,
+      "uniDiesel": null,
+      "uniKerosene18l": null,
+      "nationalHighOctane": 177.6,
+      "aichiHighOctane": 173,
+      "nationalKerosene18l": 2518.6,
+      "aichiKerosene18l": 2523,
+      "confirmedLabel": null,
+      "fetchedAt": "2026-11-22T21:14:51.507Z"
     }
   ]
 }
